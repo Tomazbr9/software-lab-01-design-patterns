@@ -31,6 +31,11 @@ public class Order {
     }
 
     public void confirmPayment(){
+
+        if(status == OrderStatus.PAID){
+            throw new IllegalArgumentException("Pedido ja foi pago");
+        }
+
         status = OrderStatus.PAID;
     }
 }

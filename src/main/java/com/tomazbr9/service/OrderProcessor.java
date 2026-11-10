@@ -1,13 +1,10 @@
 package com.tomazbr9.service;
 
+import com.tomazbr9.dto.OrderRequest;
 import com.tomazbr9.dto.OrderResponse;
-import com.tomazbr9.model.Item;
 import com.tomazbr9.model.Order;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class OrderProcessor {
@@ -21,9 +18,9 @@ public class OrderProcessor {
     private final BigDecimal DISCOUNT = new BigDecimal("0.90");
     private final BigDecimal DISCOUNT_AMOUNT = new BigDecimal("500.00");
 
-    public OrderResponse processOrder(Order newOrder){
+    public OrderResponse processOrder(OrderRequest request){
 
-        BigDecimal total = newOrder.getItems().stream()
+        BigDecimal total = request.items().stream()
                 .map(
                         item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))
                 )
@@ -38,13 +35,10 @@ public class OrderProcessor {
             throw new IllegalArgumentException();
         }
 
-        UUID id = newOrder.getId();
-        List<Item> items = newOrder.getItems();
-        Order order = new Order(id, items);
-
+        Order order = new Order(UUID.randomUUID(), request.items());
         order.confirmPayment();
 
-        return new OrderResponse(order, total);
+        return new OrderResponse(order.getId(), order.getItems(), order.getStatus(), total);
 
     }
 

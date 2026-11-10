@@ -1,5 +1,6 @@
 package com.tomazbr9;
 
+import com.tomazbr9.dto.OrderRequest;
 import com.tomazbr9.dto.OrderResponse;
 import com.tomazbr9.model.Item;
 import com.tomazbr9.model.Order;
@@ -24,13 +25,13 @@ public class Main {
 
         List<Item> items = List.of(item1, item2);
 
-        Order order = new Order(UUID.randomUUID(), items);
+        OrderRequest request = new OrderRequest(items);
 
-        OrderResponse response = orderProcessor.processOrder(order);
+        OrderResponse response = orderProcessor.processOrder(request);
 
-        System.out.println("Id do Pedido: " + response.order().getId());
+        System.out.println("Id do Pedido: " + response.id());
         System.out.println("Total do Pedido: R$" + response.total().setScale(2, RoundingMode.HALF_UP));
-        System.out.println("Status do Pagamento : " + response.order().getStatus());
+        System.out.println("Status do Pagamento : " + response.status());
 
     }
 }
