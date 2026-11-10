@@ -22,23 +22,15 @@ public class Order {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public List<Item> getItems() {
         return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
     }
 
     public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void confirmPayment(){
+        status = OrderStatus.PAID;
     }
 }
