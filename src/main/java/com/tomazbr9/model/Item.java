@@ -1,5 +1,6 @@
 package com.tomazbr9.model;
 
+import javax.management.InvalidAttributeValueException;
 import java.math.BigDecimal;
 
 public class Item {
@@ -11,32 +12,45 @@ public class Item {
     private Integer quantity;
 
     public Item(String name, BigDecimal price, Integer quantity){
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
+        this.name = validateName(name);
+        this.price = validatePrice(price);
+        this.quantity = validateQuantity(quantity);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    private String validateName(String name){
+        if(name == null || name.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+        return name;
     }
+
+    private BigDecimal validatePrice(BigDecimal price){
+        if(price == null || price.compareTo(BigDecimal.ZERO) < 0){
+            System.out.println("preço do produto é obrigatorio");
+            throw new IllegalArgumentException();
+        }
+        return price;
+    }
+
+    private Integer validateQuantity(Integer quantity){
+        if(quantity < 0){
+            System.out.println("quantidade do produto é obrigatorio");
+            throw new IllegalArgumentException();
+        }
+
+        return quantity;
+    }
+
 }

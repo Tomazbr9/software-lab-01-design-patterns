@@ -1,9 +1,14 @@
 package com.tomazbr9.service;
 
+import com.tomazbr9.dto.OrderResponse;
+import com.tomazbr9.model.Item;
 import com.tomazbr9.model.Order;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class OrderProcessor {
 
@@ -16,9 +21,9 @@ public class OrderProcessor {
     private final BigDecimal DISCOUNT = new BigDecimal("0.90");
     private final BigDecimal DISCOUNT_AMOUNT = new BigDecimal("500.00");
 
-    public void processOrder(Order order){
+    public OrderResponse processOrder(Order newOrder){
 
-        BigDecimal total = order.getItems().stream()
+        BigDecimal total = newOrder.getItems().stream()
                 .map(
                         item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))
                 )
@@ -30,14 +35,16 @@ public class OrderProcessor {
 
         if(!paymentSimulator.process(total)){
             System.out.println("Pagamento invalido");
-            return;
+            throw new IllegalArgumentException();
         }
+
+        UUID id = newOrder.getId();
+        List<Item> items = newOrder.getItems();
+        Order order = new Order(id, items);
 
         order.confirmPayment();
 
-        System.out.println("Numero do pedido: " + order.getId());
-        System.out.println("Total: R$" + total.setScale(2, RoundingMode.HALF_UP));
-        System.out.println("Status: " + order.getStatus().name());
+        return new OrderResponse(order, total);
 
     }
 
