@@ -10,14 +10,14 @@ import java.util.UUID;
 public class OrderProcessor {
 
     private final PaymentSimulator paymentSimulator;
-    private final Descount descount;
+    private final DiscountCalculator discountCalculator;
 
     public OrderProcessor(
             PaymentSimulator paymentSimulator,
-            Descount descount
+            DiscountCalculator discountCalculator
     ){
         this.paymentSimulator = paymentSimulator;
-        this.descount = descount;
+        this.discountCalculator = discountCalculator;
     }
 
 
@@ -31,7 +31,7 @@ public class OrderProcessor {
                 )
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalWithDescount = descount.applyDiscount(total);
+        BigDecimal totalWithDescount = discountCalculator.applyDiscount(total);
 
         if(!paymentSimulator.process(total)){
             throw new IllegalArgumentException("Pagamento invalido");

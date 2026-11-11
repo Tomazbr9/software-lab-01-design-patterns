@@ -2,7 +2,7 @@ package com.tomazbr9.service;
 
 import java.math.BigDecimal;
 
-public class Descount {
+public class DiscountCalculator {
 
     private final BigDecimal DISCOUNT = new BigDecimal("0.90");
     private final BigDecimal DISCOUNT_AMOUNT = new BigDecimal("500.00");
