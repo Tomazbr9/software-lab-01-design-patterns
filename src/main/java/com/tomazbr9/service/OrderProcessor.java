@@ -10,15 +10,20 @@ import java.util.UUID;
 public class OrderProcessor {
 
     private final PaymentSimulator paymentSimulator;
+    private final Descount descount;
 
-    public OrderProcessor(PaymentSimulator paymentSimulator){
+    public OrderProcessor(
+            PaymentSimulator paymentSimulator,
+            Descount descount
+    ){
         this.paymentSimulator = paymentSimulator;
+        this.descount = descount;
     }
 
-    private final BigDecimal DISCOUNT = new BigDecimal("0.90");
-    private final BigDecimal DISCOUNT_AMOUNT = new BigDecimal("500.00");
 
     public OrderResponse processOrder(OrderRequest request){
+
+        Order order = new Order(UUID.randomUUID(), request.items());
 
         BigDecimal total = request.items().stream()
                 .map(
@@ -26,19 +31,20 @@ public class OrderProcessor {
                 )
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if(total.compareTo(DISCOUNT_AMOUNT) >= 0){
-            total = total.multiply(DISCOUNT);
-        }
+        BigDecimal totalWithDescount = descount.applyDiscount(total);
 
         if(!paymentSimulator.process(total)){
-            System.out.println("Pagamento invalido");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Pagamento invalido");
         }
 
-        Order order = new Order(UUID.randomUUID(), request.items());
         order.confirmPayment();
 
-        return new OrderResponse(order.getId(), order.getItems(), order.getStatus(), total);
+        return new OrderResponse(
+                order.getId(),
+                order.getItems(),
+                order.getStatus(),
+                totalWithDescount
+        );
 
     }
 

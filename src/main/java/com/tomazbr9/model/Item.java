@@ -30,24 +30,22 @@ public class Item {
     }
 
     private String validateName(String name){
-        if(name == null || name.isEmpty()){
-            throw new IllegalArgumentException();
+        if(name == null || name.trim().isEmpty()){
+            throw new IllegalArgumentException("Nome do produto é obrigatorio");
         }
         return name;
     }
 
     private BigDecimal validatePrice(BigDecimal price){
         if(price == null || price.compareTo(BigDecimal.ZERO) < 0){
-            System.out.println("preço do produto é obrigatorio");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Preço do produto é obrigatorio");
         }
         return price;
     }
 
     private Integer validateQuantity(Integer quantity){
-        if(quantity < 0){
-            System.out.println("quantidade do produto é obrigatorio");
-            throw new IllegalArgumentException();
+        if(quantity <= 0){
+            throw new IllegalArgumentException("Quantidade do produto é obrigatorio");
         }
 
         return quantity;
