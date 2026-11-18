@@ -3,9 +3,7 @@ package com.tomazbr9;
 import com.tomazbr9.dto.OrderRequest;
 import com.tomazbr9.dto.OrderResponse;
 import com.tomazbr9.model.Item;
-import com.tomazbr9.service.DiscountCalculator;
-import com.tomazbr9.service.OrderProcessor;
-import com.tomazbr9.service.PaymentSimulator;
+import com.tomazbr9.service.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,11 +14,12 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        PaymentSimulator paymentSimulator = new PaymentSimulator();
+        PaymentMethod pixMethod = new PixPayment();
+        PaymentMethod creditMethod = new CreditPayment();
         DiscountCalculator discountCalculator = new DiscountCalculator();
-        OrderProcessor orderProcessor = new OrderProcessor(paymentSimulator, discountCalculator);
+        OrderProcessor orderProcessor = new OrderProcessor(discountCalculator, creditMethod);
 
-        Item item1 = new Item("Pizza de calabbresa", new BigDecimal("400.00"), 1);
+        Item item1 = new Item("Pizza de calabbresa", new BigDecimal("1000.00"), 1);
         Item item2 = new Item("Cola Cola 2L", new BigDecimal("100"), 1);
 
         List<Item> items = List.of(item1, item2);
