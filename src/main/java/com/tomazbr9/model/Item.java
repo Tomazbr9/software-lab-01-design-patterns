@@ -44,7 +44,7 @@ public class Item {
     }
 
     private Integer validateQuantity(Integer quantity){
-        if(quantity <= 0){
+        if(quantity == null || quantity <= 0){
             throw new IllegalArgumentException("Quantidade do produto é obrigatorio");
         }
 

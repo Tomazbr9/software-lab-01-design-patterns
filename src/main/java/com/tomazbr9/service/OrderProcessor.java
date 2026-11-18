@@ -33,9 +33,11 @@ public class OrderProcessor {
 
         BigDecimal totalWithDescount = discountCalculator.applyDiscount(total);
 
-        paymentMethod.processPayment(totalWithDescount);
+        boolean approved = paymentMethod.processPayment(totalWithDescount);
 
-        order.confirmPayment();
+        if(approved){
+            order.confirmPayment();
+        }
 
         return new OrderResponse(
                 order.getId(),

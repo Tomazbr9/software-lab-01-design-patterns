@@ -7,8 +7,8 @@ public class PixPayment implements PaymentMethod{
     @Override
     public boolean processPayment(BigDecimal value) {
 
-        if(!(value.compareTo(BigDecimal.ZERO) > 0)){
-            throw new IllegalArgumentException("Valor para processar pix deve ser maior que zero");
+        if(value.compareTo(BigDecimal.ZERO) <= 0){
+            return false;
         }
 
         System.out.println("Pagamento efetuado com sucesso");

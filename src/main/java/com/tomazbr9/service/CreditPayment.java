@@ -9,12 +9,12 @@ public class CreditPayment implements PaymentMethod{
     @Override
     public boolean processPayment(BigDecimal value) {
 
-        if(!(value.compareTo(BigDecimal.ZERO) > 0)){
-            throw  new IllegalArgumentException("Valor deve ser maior que zero");
+        if(value.compareTo(BigDecimal.ZERO) <= 0){
+            return false;
         }
 
-        if(!(value.compareTo(VALUE_LIMIT) <= 0)){
-            throw new IllegalArgumentException("Limite de R$ 1000,00 ultrapassado!");
+        if(value.compareTo(VALUE_LIMIT) > 0){
+            return false;
         }
 
         System.out.println("Pagamento efetuado com sucesso");

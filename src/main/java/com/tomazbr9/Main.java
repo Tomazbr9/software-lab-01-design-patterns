@@ -19,7 +19,7 @@ public class Main {
         DiscountCalculator discountCalculator = new DiscountCalculator();
         OrderProcessor orderProcessor = new OrderProcessor(discountCalculator, creditMethod);
 
-        Item item1 = new Item("Pizza de calabbresa", new BigDecimal("1000.00"), 1);
+        Item item1 = new Item("Pizza de calabbresa", new BigDecimal("1100.00"), null);
         Item item2 = new Item("Cola Cola 2L", new BigDecimal("100"), 1);
 
         List<Item> items = List.of(item1, item2);
